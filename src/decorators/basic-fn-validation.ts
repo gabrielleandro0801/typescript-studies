@@ -4,11 +4,7 @@ const userEmails = [
 ];
 
 function CheckDuplicateUser(): Function {
-    function validate(
-        target: Object,
-        key: string | symbol,
-        descriptor: PropertyDescriptor
-    ) {
+    function validate(target: Object, key: string | symbol, descriptor: PropertyDescriptor) {
         const childFunction = descriptor.value;
 
         descriptor.value = (...args: any[]) => {
@@ -33,7 +29,7 @@ class UserService {
 
     @CheckDuplicateUser()
     createUser(user: any): void {
-        userEmails.push(user.email); // we have to insert user to the database.
+        userEmails.push(user.email);
         console.log(`===== User saved in database! [${user}] =====\n`);
     }
 

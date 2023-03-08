@@ -52,7 +52,7 @@ function main() {
             new Person(user.name, user.age);
             console.log("===== Person successfully created =====\n");
         } catch (error) {
-        console.error(`===== Error when creating person: ${error.message} =====\n`);
+            console.error(`===== Error when creating person: ${error.message} =====\n`);
         }
     }
 }
