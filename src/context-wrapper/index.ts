@@ -1,5 +1,9 @@
 import { contextWrapper } from "./context-wrapper";
 
+// Context Wrapper
+// Feature utilizada para abertura de contextos
+// Comumente utilizada quando há múltiplos contextos numa aplicação (Servidor REST, Consumidor Kafka, etc)
+
 // Cada "run" abre um novo contexto
 // onde as variáveis definidas não interferem em outras execuções
 contextWrapper.run(async () => {

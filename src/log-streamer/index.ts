@@ -1,6 +1,9 @@
 import { contextWrapper } from "../context-wrapper/context-wrapper";
 import { logger } from "./logger";
 
+// Log Streamer
+// Feature utilizada quando logLevel é DEBUG para emitir logs DEBUG quando um log ERROR é emitido
+
 // Quando o level é "INFO", os logs do tipo "DEBUG"
 // são perdidos
 contextWrapper.run(() => {
