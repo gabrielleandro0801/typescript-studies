@@ -1,0 +1,25 @@
+{
+  "name": "typescript-studies",
+  "version": "1.0.0",
+  "description": "Repository with examples of third part libraries, code snippets and other stuff in Typescript",
+  "main": "index.js",
+  "scripts": {
+    "con-wrapper": "npm run execute src/context-wrapper/index.ts",
+    "execute": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify $1",
+    "lint": "prettier --config .prettierrc 'src/**/*.ts' --check",
+    "lint:fix": "prettier --config .prettierrc 'src/**/*.ts' --write --check",
+    "logger": "npm run execute src/log-streamer/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.7.9",
+    "prettier": "^3.3.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "winston": "^3.15.0"
+  }
+}
