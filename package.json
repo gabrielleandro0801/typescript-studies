@@ -4,6 +4,7 @@
   "description": "Repository with examples of third part libraries, code snippets and other stuff in Typescript",
   "main": "index.js",
   "scripts": {
+    "circuit-breaker-wrapper": "npm run execute src/circuit-breaker/wrapper/index.ts",
     "con-wrapper": "npm run execute src/context-wrapper/index.ts",
     "confluentinc-kafka-consumer": "npm run execute src/confluentinc-kafka-javascript/consumer.ts",
     "confluentinc-kafka-producer": "npm run execute src/confluentinc-kafka-javascript/producer.ts",
