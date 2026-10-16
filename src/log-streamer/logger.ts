@@ -2,14 +2,15 @@ import { TransformableInfo } from "logform";
 import { PassThrough } from "node:stream";
 import winston, { Logger, format, transports } from "winston";
 import { contextWrapper } from "../context-wrapper/context-wrapper";
+import { getSpanIdAndTraceId } from "../datadog-tracer/tracer";
 
 export type LogExhibitionLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 
 export interface ILogger {
-    debug(content): void;
-    info(content): void;
-    warn(content): void;
-    error(content): void;
+    debug(content: { [key: string]: any }): void;
+    info(content: { [key: string]: any }): void;
+    warn(content: { [key: string]: any }): void;
+    error(content: { [key: string]: any }): void;
     createStream(): void;
     finishStream(): void;
     setLevel(level: LogExhibitionLevel): void;
@@ -39,6 +40,7 @@ export class WinstonLogger implements ILogger {
                         executionId: contextWrapper.executionId,
                         timestamp,
                         message,
+                        dd: getSpanIdAndTraceId(),
                     };
 
                     return JSON.stringify(log);
@@ -60,7 +62,7 @@ export class WinstonLogger implements ILogger {
         this.streams.delete(contextWrapper.executionId);
     }
 
-    debug(content: any): void {
+    debug(content: { [key: string]: any }): void {
         if (this.logger.level === "debug") {
             this.logger.debug(content);
             return;
@@ -69,7 +71,7 @@ export class WinstonLogger implements ILogger {
         const originalTimestamp: string = new Date().toISOString();
 
         this.createStream();
-        const stream: PassThrough = this.streams.get(contextWrapper.executionId);
+        const stream: PassThrough | undefined = this.streams.get(contextWrapper.executionId);
 
         if (this.hasStreamedLogs()) {
             stream?.write(WinstonLogger.SEPARATOR);
@@ -78,15 +80,15 @@ export class WinstonLogger implements ILogger {
         stream?.write(JSON.stringify({ ...content, originalTimestamp }));
     }
 
-    info(content: any): void {
+    info(content: { [key: string]: any }): void {
         this.logger.info(content);
     }
 
-    warn(content: any): void {
+    warn(content: { [key: string]: any }): void {
         this.logger.warn(content);
     }
 
-    error(content: any): void {
+    error(content: { [key: string]: any }): void {
         if (this.hasStreamedLogs()) {
             this.flushStreamedLogs()
                 .split(WinstonLogger.SEPARATOR)
@@ -113,7 +115,8 @@ export class WinstonLogger implements ILogger {
     }
 
     private hasStreamedLogs(): boolean {
-        const logStream: PassThrough = this.streams.get(contextWrapper.executionId);
+        const logStream: PassThrough | undefined = this.streams.get(contextWrapper.executionId);
+
         return !!(logStream?.readable && logStream?.readableLength);
     }
 
